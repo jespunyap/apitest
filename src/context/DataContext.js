@@ -14,24 +14,23 @@ const DataContext = ({children}) => {
     const [state,setState] = useState(initialState);
     const callApi = async () => {
         console.log('Call api: '+state.url)
-        let error=false;
         try{
             const res = await (await fetch(state.url)).json();
             console.log(res);
             setState({...state,error:false,data:res,action:'callback'})
         }
         catch (err) {
-            error=true;
             console.log(err.message)
             setState({...state,error:true,data:err.message,action:'callback'})
         }
-        //if(error) setState({...state,error:true,data:'error',action:'ready'})
-        //if(state.callBack) state.callBack(error);
     }
 
     const callback = ()=>{
         setState({...state,action:'ready'})
         if(state.callBack) state.callBack();
+    }
+    const setData = ()=>{
+        setState({...state,action:'ready'});
     }
 
     useEffect(()=>{
@@ -40,7 +39,11 @@ const DataContext = ({children}) => {
             callApi()
         }
         else if(state.action==='callback'){
-            setTimeout(callback,100)
+            //setTimeout(callback,100)
+            callback()
+        }
+        else if(state.action==='setData'){
+            setData()
         }
     },[state.action])
 
@@ -53,9 +56,9 @@ const DataContext = ({children}) => {
 
 const getCtxValue = (state,setState) => {
     return {
-        dataApi: state.data,
         data: {data:state.data,error:state.error},
         callApi: (url,callBack) => setState({...state,action:'callApi',url:url,callBack:callBack}),
+        setData: (ndata) => setState({...state,action:'setData',data:ndata})
     }
 };
 

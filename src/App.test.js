@@ -1,8 +1,17 @@
 import { render, screen } from '@testing-library/react';
 import App from './App';
+import { BrowserRouter } from 'react-router-dom';
+
+const Mocktest =()=>{
+  return(
+    <BrowserRouter>
+      <App/>
+    </BrowserRouter>
+  )
+}
 
 test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
+  render(<Mocktest/>);
+  const linkElement = screen.getByText(/Onboarding/i);
   expect(linkElement).toBeInTheDocument();
 });

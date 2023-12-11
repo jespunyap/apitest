@@ -1,7 +1,7 @@
 const LoadingComponent = props => {
     return(
         <>
-            {props.loading && <p>...Loading...</p>}
+            <p>...Loading...</p>
         </>
     )
 }
